@@ -392,18 +392,19 @@
     </div>
 
     <script>
-        // INICIALIZAÇÃO DO FIREBASE USANDO VARIAVEIS DE AMBIENTE
+        // ✅ MANTENDO EXATAMENTE O SISTEMA DE VARIÁVEIS DO RENDER
         const firebaseConfig = {
-            apiKey: typeof FIREBASE_API_KEY !== 'undefined' ? FIREBASE_API_KEY : '',
-            authDomain: typeof FIREBASE_AUTH_DOMAIN !== 'undefined' ? FIREBASE_AUTH_DOMAIN : '',
-            projectId: typeof FIREBASE_PROJECT_ID !== 'undefined' ? FIREBASE_PROJECT_ID : '',
-            storageBucket: typeof FIREBASE_STORAGE_BUCKET !== 'undefined' ? FIREBASE_STORAGE_BUCKET : '',
-            messagingSenderId: typeof FIREBASE_MESSAGING_SENDER_ID !== 'undefined' ? FIREBASE_MESSAGING_SENDER_ID : '',
-            appId: typeof FIREBASE_APP_ID !== 'undefined' ? FIREBASE_APP_ID : ''
+            apiKey: "%%FIREBASE_API_KEY%%",
+            authDomain: "%%FIREBASE_AUTH_DOMAIN%%",
+            projectId: "%%FIREBASE_PROJECT_ID%%",
+            storageBucket: "%%FIREBASE_STORAGE_BUCKET%%",
+            messagingSenderId: "%%FIREBASE_MESSAGING_SENDER_ID%%",
+            appId: "%%FIREBASE_APP_ID%%"
         };
 
         let db = null;
-        if (firebaseConfig.apiKey) {
+        // Inicializa apenas se as variáveis foram substituídas corretamente pelo Render
+        if (!firebaseConfig.apiKey.includes("%%")) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
         }
@@ -511,7 +512,7 @@
 
         async function carregarSensibilidadesFirestore() {
             if (!db) {
-                document.getElementById('listaComunidade').innerHTML = '<p style="text-align:center; color:var(--vermelho);">Banco de dados não configurado.</p>';
+                document.getElementById('listaComunidade').innerHTML = '<p style="text-align:center; color:var(--vermelho);">Aguarde configuração do banco de dados.</p>';
                 return;
             }
             try {
@@ -520,18 +521,18 @@
                 snapshot.forEach(doc => listaEnviadas.push(doc.data()));
                 atualizarListaComunidade();
             } catch (erro) {
-                document.getElementById('listaComunidade').innerHTML = '<p style="text-align:center; color:var(--vermelho);">Erro ao carregar dados.</p>';
+                document.getElementById('listaComunidade').innerHTML = `<p style="text-align:center; color:var(--vermelho);">Erro ao carregar: ${erro.message}</p>`;
             }
         }
 
         async function enviarParaComunidade() {
             if (!verificarLimite()) {
-                alert('⚠️ Você já atingiu o limite diário! Aguarde o prazo para enviar novamente.');
+                alert('⚠️ Você já atingiu o limite diário! Aguarde 24 horas para enviar novamente.');
                 return;
             }
 
             if (!db) {
-                alert('⚠️ Banco de dados não está configurado corretamente.');
+                alert('⚠️ Banco de dados não configurado no servidor.');
                 return;
             }
 
@@ -554,7 +555,7 @@
             }
 
             if(!anonimo && (!nome || !whats || !id)) {
-                alert('⚠️ Preencha Nome, WhatsApp e ID ou marque a opção de cadastrar anônimo!');
+                alert('⚠️ Preencha seus dados ou marque a opção de enviar como anônimo!');
                 return;
             }
 
@@ -570,6 +571,7 @@
                 await db.collection('sensibilidades').add(dados);
                 localStorage.setItem(CHAVE_STORAGE, Date.now().toString());
                 
+                // Limpa os campos após envio
                 document.getElementById('campoNome').value = '';
                 document.getElementById('campoWhats').value = '';
                 document.getElementById('campoId').value = '';
@@ -583,16 +585,19 @@
                 document.getElementById('campoDpi').value = '';
                 document.getElementById('campoBotao').value = '';
 
-                alert('✅ Enviado com sucesso! Salvo no banco de dados. Você poderá enviar novamente após 24 horas.');
+                alert('✅ Sensibilidade enviada com sucesso!');
                 verificarLimite();
             } catch (erro) {
-                alert('❌ Erro ao salvar: ' + erro.message);
+                alert(`❌ Erro ao salvar: ${erro.message}`);
             }
         }
 
         function iniciarServico() {
             const opcao = document.getElementById('servico').value;
-            if (!opcao) { alert('⚠️ Selecione a opção primeiro!'); return; }
+            if (!opcao) { 
+                alert('⚠️ Selecione a opção primeiro!'); 
+                return; 
+            }
             carregarSensibilidadesFirestore();
             document.getElementById('telaInicial').classList.remove('ativa');
             document.getElementById('telaSensibilidade').classList.add('ativa');
@@ -602,7 +607,7 @@
             const container = document.getElementById('listaComunidade');
             container.innerHTML = '';
             if(listaEnviadas.length === 0) {
-                container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:16px;">Nenhuma sensibilidade enviada ainda. Seja o primeiro a compartilhar!</p>';
+                container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:16px;">Nenhuma sensibilidade enviada ainda. Seja o primeiro!</p>';
                 return;
             }
             listaEnviadas.forEach(item => {
@@ -638,8 +643,8 @@
         function copiarLink() {
             const link = "https://sensibilidade-freefire.onrender.com";
             navigator.clipboard.writeText(link)
-                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos. Equipe agradece a sua ajuda!'))
-                .catch(() => alert('❌ Infelizmente não foi possível copiar o link. Tente novamente!'));
+                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos.'))
+                .catch(() => alert('❌ Não foi possível copiar o link.'));
         }
 
         verificarLimite();
