@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkSensi Free Fire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --dourado: #ffd700;
+            --fundo: #121212;
+            --texto: #e0e0e0;
+            --texto-claro: #ffffff;
+            --vermelho: #ef4444;
+            --azul: #2563eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--fundo);
+            color: var(--texto);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .fundo-animado {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #050505, #101010, #080808);
+            background-size: 400% 400%;
+            animation: fundoMovendo 12s ease infinite;
+            z-index: -2;
+        }
+
+        .particulas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particula {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            animation: flutuar 18s infinite ease-in-out;
+        }
+
+        @keyframes fundoMovendo {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes flutuar {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px 25px;
+        }
+
+        header h1 {
+            color: var(--dourado);
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .boas-vindas {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .aviso-servico {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 3px solid var(--dourado);
+            background-color: #000000;
+            color: var(--texto-claro);
+            font-size: 20px;
+            outline: none;
+            margin-bottom: 20px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffd700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .btn-dourado {
+            background-color: var(--dourado);
+            color: #000;
+        }
+        .btn-dourado:hover {
+            background-color: #e6c200;
+            transform: translateY(-2px);
+        }
+
+        .btn-vermelho {
+            background-color: var(--vermelho);
+            color: white;
+        }
+        .btn-vermelho:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-azul {
+            background-color: var(--azul);
+            color: white;
+            margin-top: 15px;
+        }
+        .btn-azul:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .linha-divisoria {
+            width: 100%;
+            height: 1px;
+            background: rgba(255,215,0,0.2);
+            margin: 40px 0;
+        }
+
+        .texto-compartilhar {
+            text-align: center;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .texto-lgpd {
+            text-align: center;
+            font-size: 16px;
+            opacity: 0.6;
+            margin-bottom: 30px;
+        }
+
+        .titulo-feedback {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dourado);
+        }
+
+        .label-feedback {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            background-color: #000000;
+            color: var(--texto-claro);
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 20px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            background-color: #000000;
+            color: var(--texto-claro);
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .tela { display: none; }
+        .tela.ativa { display: block; }
+
+        .aviso-sucesso {
+            text-align: center;
+            color: var(--dourado);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .caixa-sensibilidade {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+        }
+
+        .item-sensibilidade {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+            font-size: 18px;
+        }
+        .item-sensibilidade:last-child {
+            border-bottom: none;
+        }
+        .nome { font-weight: 500; }
+        .valor { color: var(--dourado); font-weight: 700; }
+
+        .btn-voltar {
+            background-color: #333;
+            color: white;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo-animado"></div>
+    <div class="particulas" id="particulas"></div>
+
+    <div class="container">
+        <div class="tela ativa" id="telaInicial">
+            <header>
+                <h1>DarkSensi Free Fire</h1>
+                <p class="boas-vindas">Olá, seja bem vindo ao nosso site oficial!</p>
+            </header>
+
+            <p class="aviso-servico">Favor selecione logo abaixo o serviço que deseja iniciar:</p>
+
+            <select id="servico">
+                <option value="">Escolha uma opção...</option>
+                <option value="sensibilidade">Gerar Sensibilidade Grátis</option>
+            </select>
+
+            <button class="btn-dourado" onclick="iniciarServico()">INICIAR SERVIÇO</button>
+
+            <div class="linha-divisoria"></div>
+
+            <p class="texto-compartilhar">Compartilhe sua sensibilidade com os nossos players de Free Fire, envie seu pack de sensibilidade grátis.</p>
+            <p class="texto-lgpd">Não coletamos dados sensíveis. Nossa equipe segue as leis da LGPD.</p>
+
+            <h3 class="titulo-feedback">Envie seu feedback</h3>
+
+            <label class="label-feedback">*WhatsApp</label>
+            <input type="text" placeholder="Ex: (00) 99999-9999" id="whatsapp">
+
+            <label class="label-feedback">*Envie aqui o seu relatório</label>
+            <textarea placeholder="Descreva sua sugestão, elogio ou problema..." id="relatorio"></textarea>
+
+            <button class="btn-vermelho" onclick="enviarFeedback()">ENVIAR FEEDBACK</button>
+
+            <button class="btn-azul" onclick="copiarLink()">COPIAR LINK E COMPARTILHAR COM OS AMIGOS</button>
+        </div>
+
+        <div class="tela" id="telaSensibilidade">
+            <h1>DarkSensi Free Fire</h1>
+
+            <p class="aviso-sucesso">
+                Sensibilidade gerada com sucesso. Lembre-se este site está em desenvolvimento, deixe o seu feedback, nossa equipe entrará em contato.
+            </p>
+
+            <div class="caixa-sensibilidade" id="resultadoSensibilidade"></div>
+
+            <button class="btn-vermelho" onclick="baixarTXT()">FAZER DOWNLOAD TXT</button>
+            <button class="btn-voltar" onclick="voltarInicio()">⬅ VOLTAR</button>
+        </div>
+    </div>
+
+    <script>
+        const containerParticulas = document.getElementById('particulas');
+        for(let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particula');
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 18 + 's';
+            p.style.animationDuration = (Math.random() * 10 + 12) + 's';
+            containerParticulas.appendChild(p);
+        }
+
+        function aleatorio(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        let dadosGerados = '';
+
+        function iniciarServico() {
+            const servico = document.getElementById('servico').value;
+            if (!servico) {
+                alert('⚠️ Selecione um serviço primeiro!');
+                return;
+            }
+            if(servico === 'sensibilidade') {
+                const geral = aleatorio(80, 100);
+                const pontoVermelho = aleatorio(75, 95);
+                const mira2x = aleatorio(70, 90);
+                const mira4x = aleatorio(65, 85);
+                const olhadinha = aleatorio(50, 75);
+                const awm = aleatorio(30, 60);
+                const tamanhoBotao = aleatorio(40, 60);
+                const dpi = aleatorio(400, 600);
+                const velocidadeRecurso = aleatorio(80, 100);
+
+                dadosGerados = `Sensibilidade DarkSensi Free Fire
+------------------------------------
+Geral: ${geral}
+Ponto Vermelho: ${pontoVermelho}
+Mira 2X: ${mira2x}
+Mira 4X: ${mira4x}
+Olhadinha: ${olhadinha}
+AWM: ${awm}
+
+Tamanho Botão: ${tamanhoBotao}%
+DPI Recomendado: ${dpi}
+Velocidade Recurso: ${velocidadeRecurso}
+
+✅ Gerado automaticamente pelo DarkSensi`;
+
+                document.getElementById('resultadoSensibilidade').innerHTML = `
+                    <div class="item-sensibilidade"><span class="nome">Geral</span><span class="valor">${geral}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Ponto Vermelho</span><span class="valor">${pontoVermelho}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Mira 2X</span><span class="valor">${mira2x}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Mira 4X</span><span class="valor">${mira4x}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Olhadinha</span><span class="valor">${olhadinha}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">AWM</span><span class="valor">${awm}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Tamanho Botão %</span><span class="valor">${tamanhoBotao}%</span></div>
+                    <div class="item-sensibilidade"><span class="nome">DPI Recomenda</span><span class="valor">${dpi}</span></div>
+                    <div class="item-sensibilidade"><span class="nome">Velocidade Recurso</span><span class="valor">${velocidadeRecurso}</span></div>
+                `;
+                document.getElementById('telaInicial').classList.remove('ativa');
+                document.getElementById('telaSensibilidade').classList.add('ativa');
+            }
+        }
+
+        function baixarTXT() {
+            const blob = new Blob([dadosGerados], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Sensibilidade_DarkSensi.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function voltarInicio() {
+            document.getElementById('telaSensibilidade').classList.remove('ativa');
+            document.getElementById('telaInicial').classList.add('ativa');
+            document.getElementById('servico').value = '';
+        }
+
+        function enviarFeedback() {
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const relatorio = document.getElementById('relatorio').value.trim();
+            if (!whatsapp || !relatorio) {
+                alert('⚠️ Preencha todos os campos obrigatórios!');
+                return;
+            }
+            alert('✅ Feedback enviado com sucesso! Agradecemos por sua colaboração.');
+            document.getElementById('whatsapp').value = '';
+            document.getElementById('relatorio').value = '';
+        }
+
+        // 📌 COLOQUE AQUI O SEU LINK FIXO DO SITE
+        function copiarLink() {
+            const link = "https://seu-link-aqui.vercel.app"; // Troque pelo seu endereço real
+            navigator.clipboard.writeText(link)
+                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos 🎮'))
+                .catch(() => alert('❌ Infelizmente não foi possível copiar o link. Tente novamente!'));
+        }
+    </script>
+</body>
+</html>
