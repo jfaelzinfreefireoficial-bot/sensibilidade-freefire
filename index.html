@@ -154,9 +154,9 @@
     </div>
 
     <script>
-        // ==============================================
-        // ✅ COLE SUAS CHAVES DO FIREBASE AQUI ABAIXO
-        // ==============================================
+        // ==============================
+        // ✅ COLE SUAS CHAVES DO FIREBASE AQUI
+        // ==============================
         const firebaseConfig = {
 
   apiKey: "AIzaSyBPEqoSTF3ZYDyiDy16-qqSyy_vEg19Qno",
@@ -175,10 +175,9 @@
 
 };
 
-        // Inicializa o Firebase automaticamente
-        let db = null;
         firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
+        const db = firebase.firestore();
+        const SEU_NUMERO_WHATSAPP = "5551981528372";
 
         const containerParticulas = document.getElementById('particulas');
         for(let i = 0; i < 40; i++) {
@@ -341,6 +340,12 @@
         function iniciarServico() {
             const opcao = document.getElementById('servico').value;
             if (!opcao) { alert('⚠️ Selecione a opção primeiro!'); return; }
+
+            // Abre o WhatsApp primeiro
+            const mensagem = encodeURIComponent('salve administrador estou online no site 😁');
+            window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${mensagem}`, '_blank');
+
+            // Já libera e carrega a lista automaticamente
             carregarSensibilidadesFirestore();
             document.getElementById('telaInicial').classList.remove('ativa');
             document.getElementById('telaSensibilidade').classList.add('ativa');
@@ -378,15 +383,14 @@
         }
 
         function abrirWhatsApp() {
-            const numero = '5551981528372';
             const mensagem = encodeURIComponent('Olá administrador quero abrir ticket sobre o site Gerador de Sensibilidade Free Fire.');
-            window.open(`https://wa.me/${numero}?text=${mensagem}`, '_blank');
+            window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${mensagem}`, '_blank');
         }
 
         function copiarLink() {
-            const link = "https://sensibilidade-freefire.onrender.com";
+            const link = window.location.href;
             navigator.clipboard.writeText(link)
-                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos.'))
+                .then(() => alert('✅ Link copiado! Compartilhe com os amigos.'))
                 .catch(() => alert('❌ Não foi possível copiar o link.'));
         }
 
