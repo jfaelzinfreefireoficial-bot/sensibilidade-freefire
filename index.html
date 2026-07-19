@@ -7,220 +7,67 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
         :root {
-            --dourado: #ffd700;
-            --fundo: #121212;
-            --texto: #e0e0e0;
-            --texto-claro: #ffffff;
-            --vermelho: #ef4444;
-            --azul: #2563eb;
-            --verde: #10b981;
+            --dourado: #ffd700; --fundo: #121212; --texto: #e0e0e0;
+            --texto-claro: #ffffff; --vermelho: #ef4444; --azul: #2563eb; --verde: #10b981;
         }
-
-        body {
-            min-height: 100vh;
-            background-color: var(--fundo);
-            color: var(--texto);
-            position: relative;
-            overflow-x: hidden;
-        }
-
+        body { min-height: 100vh; background-color: var(--fundo); color: var(--texto); position: relative; overflow-x: hidden; }
         .fundo-animado {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #050505, #101010, #080808);
-            background-size: 400% 400%;
-            animation: fundoMovendo 12s ease infinite;
-            z-index: -2;
+            background-size: 400% 400%; animation: fundoMovendo 12s ease infinite; z-index: -2;
         }
-
-        .particulas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .particula {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 215, 0, 0.3);
-            border-radius: 50%;
-            animation: flutuar 18s infinite ease-in-out;
-        }
-
         @keyframes fundoMovendo {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
-
+        .particulas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .particula {
+            position: absolute; width: 2px; height: 2px; background: rgba(255,215,0,0.3);
+            border-radius: 50%; animation: flutuar 18s infinite ease-in-out;
+        }
         @keyframes flutuar {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
-
-        .area-notificacoes {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
+        .area-notificacoes { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .notificacao {
-            background: rgba(0,0,0,0.9);
-            border-left: 3px solid var(--dourado);
-            padding: 12px 15px;
-            border-radius: 8px;
-            color: var(--texto-claro);
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            animation: entradaSuave 0.5s ease forwards;
-            max-width: 280px;
+            background: rgba(0,0,0,0.9); border-left: 3px solid var(--dourado); padding: 12px 15px;
+            border-radius: 8px; color: var(--texto-claro); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: entradaSuave 0.5s ease forwards; max-width: 280px;
         }
-
-        .notificacao .hora {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
-        @keyframes entradaSuave {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes saidaSuave {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(-100%); opacity: 0; }
-        }
-
+        .notificacao .hora { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+        @keyframes entradaSuave { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes saidaSuave { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-100%); opacity: 0; } }
         .aviso-limite {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--vermelho);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+            background: rgba(239,68,68,0.1); border: 1px solid var(--vermelho); border-radius: 12px;
+            padding: 20px; text-align: center; margin-bottom: 20px;
         }
-
-        .aviso-limite h4 {
-            color: var(--vermelho);
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .aviso-limite .contador {
-            color: var(--dourado);
-            font-size: 22px;
-            font-weight: 700;
-            margin: 10px 0;
-            font-family: monospace;
-        }
-
-        .aviso-limite p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px 25px;
-        }
-
-        header h1 {
-            color: var(--dourado);
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .boas-vindas {
-            text-align: center;
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-
-        .aviso-servico {
-            text-align: center;
-            font-size: 22px;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
+        .aviso-limite h4 { color: var(--vermelho); font-size: 18px; margin-bottom: 10px; }
+        .aviso-limite .contador { color: var(--dourado); font-size: 22px; font-weight: 700; margin: 10px 0; font-family: monospace; }
+        .aviso-limite p { font-size: 16px; opacity: 0.9; }
+        .container { max-width: 600px; margin: 50px auto; padding: 30px 25px; }
+        header h1 { color: var(--dourado); font-size: 42px; text-align: center; margin-bottom: 15px; font-weight: 700; }
+        .boas-vindas { text-align: center; font-size: 20px; margin-bottom: 40px; opacity: 0.8; }
+        .aviso-servico { text-align: center; font-size: 22px; margin-bottom: 25px; line-height: 1.4; }
         select {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 3px solid var(--dourado);
-            background-color: #000000;
-            color: var(--texto-claro);
-            font-size: 20px;
-            outline: none;
-            margin-bottom: 20px;
-            cursor: pointer;
-            appearance: none;
+            width: 100%; padding: 15px 20px; border-radius: 12px; border: 3px solid var(--dourado);
+            background-color: #000; color: var(--texto-claro); font-size: 20px; outline: none;
+            margin-bottom: 20px; cursor: pointer; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffd700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
+            background-repeat: no-repeat; background-position: right 15px center;
         }
-
         input[type="text"] {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 10px;
-            border: none;
-            background-color: #000;
-            color: var(--texto-claro);
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 12px;
+            width: 100%; padding: 14px 18px; border-radius: 10px; border: none;
+            background-color: #000; color: var(--texto-claro); font-size: 16px; outline: none; margin-bottom: 12px;
         }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            padding-left: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
+        .checkbox-container { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; padding-left: 5px; font-size: 16px; cursor: pointer; }
         button {
-            width: 100%;
-            padding: 18px;
-            border-radius: 12px;
-            border: none;
-            font-size: 22px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 12px;
+            width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 22px;
+            font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-bottom: 12px;
         }
-
         .btn-dourado { background-color: var(--dourado); color: #000; }
         .btn-dourado:hover { background-color: #e6c200; transform: translateY(-2px); }
         .btn-vermelho { background-color: var(--vermelho); color: white; }
@@ -230,77 +77,16 @@
         .btn-verde { background-color: var(--verde); color: white; }
         .btn-verde:hover { background-color: #059669; transform: translateY(-2px); }
         .btn-verde:disabled { background-color: #374151; cursor: not-allowed; opacity: 0.6; }
-
-        .linha-divisoria {
-            width: 100%;
-            height: 1px;
-            background: rgba(255,215,0,0.2);
-            margin: 40px 0;
-        }
-
-        .titulo-comunidade {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dourado);
-        }
-
-        .subtitulo-comunidade {
-            text-align: center;
-            font-size: 17px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        .label-comunidade {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 5px;
-            padding-left: 5px;
-        }
-
-        .titulo-lista {
-            text-align: center;
-            font-size: 21px;
-            font-weight: 700;
-            margin: 10px 0 20px;
-            color: var(--dourado);
-        }
-
-        .caixa-sensi-enviada {
-            background: rgba(0,0,0,0.4);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border-left: 3px solid var(--dourado);
-        }
-
-        .dados-usuario {
-            font-size: 15px;
-            opacity: 0.8;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,215,0,0.15);
-        }
-
-        .item-enviado {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            font-size: 16px;
-        }
-
-        .texto-lgpd {
-            text-align: center;
-            font-size: 16px;
-            opacity: 0.6;
-            margin-bottom: 30px;
-        }
-
-        .tela { display: none; }
-        .tela.ativa { display: block; }
-
+        .linha-divisoria { width: 100%; height: 1px; background: rgba(255,215,0,0.2); margin: 40px 0; }
+        .titulo-comunidade { text-align: center; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--dourado); }
+        .subtitulo-comunidade { text-align: center; font-size: 17px; margin-bottom: 20px; opacity: 0.9; }
+        .label-comunidade { display: block; font-size: 16px; margin-bottom: 5px; padding-left: 5px; }
+        .titulo-lista { text-align: center; font-size: 21px; font-weight: 700; margin: 10px 0 20px; color: var(--dourado); }
+        .caixa-sensi-enviada { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 18px; margin-bottom: 15px; border-left: 3px solid var(--dourado); }
+        .dados-usuario { font-size: 15px; opacity: 0.8; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,215,0,0.15); }
+        .item-enviado { display: flex; justify-content: space-between; padding: 5px 0; font-size: 16px; }
+        .texto-lgpd { text-align: center; font-size: 16px; opacity: 0.6; margin-bottom: 30px; }
+        .tela { display: none; } .tela.ativa { display: block; }
         .btn-voltar { background-color: #333; color: white; margin-top: 10px; }
         .carregando { text-align: center; padding: 20px; color: var(--dourado); }
     </style>
@@ -316,73 +102,49 @@
                 <h1>DarkSensi Free Fire</h1>
                 <p class="boas-vindas">Olá, seja bem vindo ao nosso site oficial!</p>
             </header>
-
             <p class="aviso-servico">Favor selecione o serviço abaixo:</p>
-
             <select id="servico">
                 <option value="">Escolha uma opção...</option>
                 <option value="lista">Ver Sensibilidades da Comunidade</option>
             </select>
-
             <button class="btn-dourado" onclick="iniciarServico()">ACESSAR</button>
-
             <button class="btn-azul" onclick="copiarLink()">COPIAR LINK E COMPARTILHAR COM OS AMIGOS</button>
-
             <div class="linha-divisoria"></div>
-
             <h3 class="titulo-comunidade">Compartilhe sua sensibilidade com a nossa comunidade Free Fire:</h3>
             <p class="subtitulo-comunidade">Preencha e envie aqui mesmo</p>
-
             <div id="avisoLimiteContainer"></div>
-
             <label class="label-comunidade">*Nome:</label>
             <input type="text" id="campoNome" placeholder="Digite seu nome">
-
             <label class="label-comunidade">*WhatsApp:</label>
             <input type="text" id="campoWhats" placeholder="Ex: (00) 99999-9999">
-
             <label class="label-comunidade">*ID:</label>
             <input type="text" id="campoId" placeholder="Seu ID do jogo">
-
             <div class="checkbox-container">
                 <input type="checkbox" id="anonimo">
                 <label for="anonimo">Cadastrar sensibilidade como anônimo</label>
             </div>
-
             <p style="margin:15px 0 8px; color:var(--dourado); font-weight:500;">Dados da Sensibilidade:</p>
-
             <label class="label-comunidade">*Geral:</label>
             <input type="text" id="campoGeral" placeholder="Digite o valor">
-
             <label class="label-comunidade">*Ponto vermelho:</label>
             <input type="text" id="campoPonto" placeholder="Digite o valor">
-
             <label class="label-comunidade">*Mira 2X:</label>
             <input type="text" id="campoMira2" placeholder="Digite o valor">
-
             <label class="label-comunidade">*Mira 4X:</label>
             <input type="text" id="campoMira4" placeholder="Digite o valor">
-
             <label class="label-comunidade">*AWM:</label>
             <input type="text" id="campoAwm" placeholder="Digite o valor">
-
             <label class="label-comunidade">*Olhadinha:</label>
             <input type="text" id="campoOlhadinha" placeholder="Digite o valor">
-
             <label class="label-comunidade">*DPI:</label>
             <input type="text" id="campoDpi" placeholder="Digite o valor">
-
             <label class="label-comunidade">*Tamanho Botão %:</label>
             <input type="text" id="campoBotao" placeholder="Digite o valor">
-
             <button class="btn-verde" id="btnEnviar" onclick="enviarParaComunidade()">ENVIAR PARA A COMUNIDADE</button>
-
             <p class="texto-lgpd">Não coletamos dados sensíveis. Nossa equipe segue as leis da LGPD.</p>
-
             <h3 class="titulo-feedback">Entre em contato com o administrador:</h3>
             <button class="btn-vermelho" onclick="abrirWhatsApp()">ENVIAR FEEDBACK</button>
         </div>
-
         <div class="tela" id="telaSensibilidade">
             <h1>DarkSensi Free Fire</h1>
             <h2 class="titulo-lista">Sensibilidades enviadas pelos usuários:</h2>
@@ -392,22 +154,31 @@
     </div>
 
     <script>
-        // ✅ MANTENDO EXATAMENTE O SISTEMA DE VARIÁVEIS DO RENDER
+        // ==============================================
+        // ✅ COLE SUAS CHAVES DO FIREBASE AQUI ABAIXO
+        // ==============================================
         const firebaseConfig = {
-            apiKey: "%%FIREBASE_API_KEY%%",
-            authDomain: "%%FIREBASE_AUTH_DOMAIN%%",
-            projectId: "%%FIREBASE_PROJECT_ID%%",
-            storageBucket: "%%FIREBASE_STORAGE_BUCKET%%",
-            messagingSenderId: "%%FIREBASE_MESSAGING_SENDER_ID%%",
-            appId: "%%FIREBASE_APP_ID%%"
-        };
 
+  apiKey: "AIzaSyBPEqoSTF3ZYDyiDy16-qqSyy_vEg19Qno",
+
+  authDomain: "sensibilidade-freefire-6d791.firebaseapp.com",
+
+  projectId: "sensibilidade-freefire-6d791",
+
+  storageBucket: "sensibilidade-freefire-6d791.firebasestorage.app",
+
+  messagingSenderId: "269911148530",
+
+  appId: "1:269911148530:web:80a1097c0cff5537e8cd6b",
+
+  measurementId: "G-ZXZN8LTLDS"
+
+};
+
+        // Inicializa o Firebase automaticamente
         let db = null;
-        // Inicializa apenas se as variáveis foram substituídas corretamente pelo Render
-        if (!firebaseConfig.apiKey.includes("%%")) {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-        }
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
 
         const containerParticulas = document.getElementById('particulas');
         for(let i = 0; i < 40; i++) {
@@ -455,24 +226,20 @@
             const ultimoEnvio = localStorage.getItem(CHAVE_STORAGE);
             const avisoContainer = document.getElementById('avisoLimiteContainer');
             const btnEnviar = document.getElementById('btnEnviar');
-
             if (!ultimoEnvio) {
                 avisoContainer.innerHTML = '';
                 btnEnviar.disabled = false;
                 return true;
             }
-
             const tempoUltimo = parseInt(ultimoEnvio);
             const agora = Date.now();
             const diferenca = agora - tempoUltimo;
-
             if (diferenca >= TEMPO_LIMITE) {
                 localStorage.removeItem(CHAVE_STORAGE);
                 avisoContainer.innerHTML = '';
                 btnEnviar.disabled = false;
                 return true;
             }
-
             btnEnviar.disabled = true;
             iniciarContador(tempoUltimo + TEMPO_LIMITE);
             return false;
@@ -481,11 +248,9 @@
         function iniciarContador(dataAlvo) {
             const avisoContainer = document.getElementById('avisoLimiteContainer');
             if (contadorInterval) clearInterval(contadorInterval);
-
             function atualizar() {
                 const agora = Date.now();
                 const resto = dataAlvo - agora;
-
                 if (resto <= 0) {
                     localStorage.removeItem(CHAVE_STORAGE);
                     avisoContainer.innerHTML = '';
@@ -493,11 +258,9 @@
                     clearInterval(contadorInterval);
                     return;
                 }
-
                 const horas = Math.floor(resto / 3600000).toString().padStart(2,'0');
                 const minutos = Math.floor((resto % 3600000) / 60000).toString().padStart(2,'0');
                 const segundos = Math.floor((resto % 60000) / 1000).toString().padStart(2,'0');
-
                 avisoContainer.innerHTML = `
                     <div class="aviso-limite">
                         <h4>Olá usuário, limite diário atingido, tente novamente mais tarde.</h4>
@@ -511,10 +274,6 @@
         }
 
         async function carregarSensibilidadesFirestore() {
-            if (!db) {
-                document.getElementById('listaComunidade').innerHTML = '<p style="text-align:center; color:var(--vermelho);">Aguarde configuração do banco de dados.</p>';
-                return;
-            }
             try {
                 const snapshot = await db.collection('sensibilidades').orderBy('dataEnvio', 'desc').get();
                 listaEnviadas = [];
@@ -530,12 +289,6 @@
                 alert('⚠️ Você já atingiu o limite diário! Aguarde 24 horas para enviar novamente.');
                 return;
             }
-
-            if (!db) {
-                alert('⚠️ Banco de dados não configurado no servidor.');
-                return;
-            }
-
             const nome = document.getElementById('campoNome').value.trim();
             const whats = document.getElementById('campoWhats').value.trim();
             const id = document.getElementById('campoId').value.trim();
@@ -548,17 +301,14 @@
             const olhadinha = document.getElementById('campoOlhadinha').value.trim();
             const dpi = document.getElementById('campoDpi').value.trim();
             const botao = document.getElementById('campoBotao').value.trim();
-
             if(!geral || !ponto || !mira2 || !mira4 || !awm || !olhadinha || !dpi || !botao) {
                 alert('⚠️ Preencha todos os dados da sensibilidade!');
                 return;
             }
-
             if(!anonimo && (!nome || !whats || !id)) {
-                alert('⚠️ Preencha seus dados ou marque a opção de enviar como anônimo!');
+                alert('⚠️ Preencha seus dados ou marque a opção de cadastrar anônimo!');
                 return;
             }
-
             const dados = {
                 nome: anonimo ? 'Anônimo' : nome,
                 whats: anonimo ? 'Não informado' : whats,
@@ -566,12 +316,9 @@
                 geral, ponto, mira2, mira4, awm, olhadinha, dpi, botao,
                 dataEnvio: firebase.firestore.FieldValue.serverTimestamp()
             };
-
             try {
                 await db.collection('sensibilidades').add(dados);
                 localStorage.setItem(CHAVE_STORAGE, Date.now().toString());
-                
-                // Limpa os campos após envio
                 document.getElementById('campoNome').value = '';
                 document.getElementById('campoWhats').value = '';
                 document.getElementById('campoId').value = '';
@@ -584,8 +331,7 @@
                 document.getElementById('campoOlhadinha').value = '';
                 document.getElementById('campoDpi').value = '';
                 document.getElementById('campoBotao').value = '';
-
-                alert('✅ Sensibilidade enviada com sucesso!');
+                alert('✅ Enviado com sucesso! Salvo no banco de dados.');
                 verificarLimite();
             } catch (erro) {
                 alert(`❌ Erro ao salvar: ${erro.message}`);
@@ -594,10 +340,7 @@
 
         function iniciarServico() {
             const opcao = document.getElementById('servico').value;
-            if (!opcao) { 
-                alert('⚠️ Selecione a opção primeiro!'); 
-                return; 
-            }
+            if (!opcao) { alert('⚠️ Selecione a opção primeiro!'); return; }
             carregarSensibilidadesFirestore();
             document.getElementById('telaInicial').classList.remove('ativa');
             document.getElementById('telaSensibilidade').classList.add('ativa');
@@ -607,7 +350,7 @@
             const container = document.getElementById('listaComunidade');
             container.innerHTML = '';
             if(listaEnviadas.length === 0) {
-                container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:16px;">Nenhuma sensibilidade enviada ainda. Seja o primeiro!</p>';
+                container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:16px;">Nenhuma sensibilidade enviada ainda. Seja o primeiro a compartilhar!</p>';
                 return;
             }
             listaEnviadas.forEach(item => {
