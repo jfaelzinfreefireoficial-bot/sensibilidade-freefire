@@ -406,13 +406,12 @@ Velocidade Recurso: ${velocidadeRecurso}
             document.getElementById('relatorio').value = '';
         }
 
-        // COLOQUE AQUI O SEU LINK FIXO DO SITE
+        // SEU LINK JÁ ESTÁ AQUI PRONTO
         function copiarLink() {
-            const link = "https://sensibilidade-freefire.onrender.com"; // Troque pelo seu endereço real
+            const link = "https://sensibilidade-freefire.onrender.com";
             navigator.clipboard.writeText(link)
-                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos . Equipe agradece a dua ajuda'))
-                .catch(() => alert('
-Infelizmente não foi possível copiar o link. Tente novamente!'));
+                .then(() => alert('✅ Link copiado com sucesso! Compartilhe com seus amigos. Equipe agradece a sua ajuda!'))
+                .catch(() => alert('❌ Infelizmente não foi possível copiar o link. Tente novamente!'));
         }
     </script>
 </body>
